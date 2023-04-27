@@ -1,25 +1,18 @@
 
 <script setup>
-import { defineProps } from 'vue';
+import { inject } from 'vue'
 const {property} = defineProps(['property'])
-
-
 </script>
-
-
 
 
 <template>
 
 <div class="property-card">
                 <div class="property-image">
-
                     <div v-show="property.madeByMe" class="edit-property">
                         <img src="../assets/images/ic_edit_white@3x.png" alt="">
                         <img src="../assets/images/ic_delete_white@3x.png" alt="">
                     </div>
-
-
                     <img :src="property.image" alt="">
                 </div>
                 <!-- holds the info and adds padding all around -->
@@ -55,7 +48,6 @@ const {property} = defineProps(['property'])
                           <img src="../assets/images/ic_price@3x.png" alt="">
                           <span>{{ property.price }}</span>
                         </div>
-
                         <button>Details</button>
                     </div>
                  </div>
@@ -72,18 +64,11 @@ img{
     
 }
 
-
-
 .property-card {
-    
     width: 320px;
     border-radius: 10px;
-
-    
     overflow: hidden;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-    
-
 }
 
 .property-image{
@@ -109,10 +94,8 @@ img{
 }
 
 .property-location {
-    
     display: flex;
     gap: 10px;
-    /* align-items: center; */
 }
 
 .property-location h2 {
@@ -181,7 +164,10 @@ img{
 }
 
 
-
+/* .info-icon {
+    width: 100px;
+    height: 10px;
+} */
 
 
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+
 :root {
 
     --primary-color: rgb(235, 84, 64);
@@ -11,6 +13,7 @@
 body {
     /* font-family: sans-serif; */
     font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    font-family: 'Lato', sans-serif;
     margin: 0;
     /* background-color: #d8d8d8; */
 }

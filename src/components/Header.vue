@@ -1,4 +1,5 @@
 <script setup>
+import { RouterLink } from 'vue-router'
 
 import {ref} from 'vue'
 
@@ -32,16 +33,16 @@ function handleMenu(){
 
             <div class="slide-in-navigation" v-show="menuIsOpen">
                 <ul>
-                    <li>Houses</li>
-                    <li>My Properties</li>
+                    <li><RouterLink class="router-link text-muted"  active-class="active" to="/">Houses</RouterLink></li>
+                    <li><RouterLink class="router-link text-muted" active-class="active" to="/MyProperties">My Properties</RouterLink></li>
                     <li><button class="nav-create-new-btn"> <img class="plus-icon" src="../assets/images/house-icon.png" alt="">Create New</button></li>
                 </ul>
             </div>
 
             <nav class="desktop-navigation">
                 <ul>
-                    <li>Houses</li>
-                    <li>My Properties</li>
+                    <li><RouterLink class="router-link text-muted" active-class="active" to="/">Houses </RouterLink></li>
+                    <li><RouterLink class="router-link text-muted" active-class="active" to="/MyProperties">My Properties</RouterLink></li>
                     <li><button class="nav-create-new-btn"> <img class="plus-icon" src="../assets/images/house-icon.png" alt="">Create New</button></li>
                 </ul>
             </nav>
@@ -55,6 +56,20 @@ function handleMenu(){
 </template>
 
 <style scoped>
+
+.router-link{
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 20px;
+   
+
+}
+
+.active{
+    font-weight: 900;
+    /* font-size: 25px; */
+    color: var(--primary-color);
+}
 
 header {
     position: sticky;
