@@ -1,6 +1,7 @@
 
 <script setup>
 import { inject } from 'vue'
+import { RouterLink } from 'vue-router'
 const {property} = defineProps(['property'])
 </script>
 
@@ -48,7 +49,7 @@ const {property} = defineProps(['property'])
                           <img src="../assets/images/ic_price@3x.png" alt="">
                           <span>{{ property.price }}</span>
                         </div>
-                        <button>Details</button>
+                        <RouterLink :to="`/properties/${property.id}`" class="details-btn">Details</RouterLink>
                     </div>
                  </div>
             </div>
@@ -153,7 +154,7 @@ img{
     gap: 10px;
 }
 
-.property-price button {
+.details-btn {
     padding: 6px 20px;
     background-color: var(--primary-color);
     border: none;
@@ -161,6 +162,7 @@ img{
     color: white;
     font-weight: 600;
     cursor: pointer;
+    text-decoration: none;
 }
 
 

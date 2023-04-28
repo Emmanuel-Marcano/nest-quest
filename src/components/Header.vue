@@ -29,8 +29,6 @@ function handleMenu(){
                 <span class="logo-name">Nest<span class="accent-logo">Quest</span> </span>
             </div>
 
-            
-
             <div class="slide-in-navigation" v-show="menuIsOpen">
                 <ul>
                     <li><RouterLink class="router-link text-muted"  active-class="active" to="/">Houses</RouterLink></li>
@@ -61,6 +59,7 @@ function handleMenu(){
     text-decoration: none;
     font-weight: 400;
     font-size: 20px;
+    transition: color 0.4s ease;
    
 
 }

@@ -1,5 +1,6 @@
 <script setup>
 import {ref, watch, onMounted, onUpdated} from 'vue'
+
 import Showcase from '../components/Showcase.vue'
 import PropertyCard from '../components/PropertyCard.vue'
 import NoResults from '../components/NoResults.vue'
@@ -23,14 +24,14 @@ let filteredProperties = ref([])
 onMounted(async function(){
   let response = await fetch("https://api.intern.d-tt.nl/api/houses", fetchOptions)
   let data = await response.json()
-  console.log(data)
+//   console.log(data)
   properties.value = data;
   filteredProperties.value = data
 })
 
 
 function onInputChange(ev){
-  console.log("Oninput")
+//   console.log("Oninput")
 
      watch(ev, function(){
      console.log(ev.cityInput)
