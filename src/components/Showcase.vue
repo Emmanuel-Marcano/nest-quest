@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, inject } from 'vue'
+import gsap from 'gsap'
 
 
 
@@ -37,16 +38,69 @@ function handleSubmit(e){
 }
 emit("search", search)
 
+// CSS TRANSITIONS
+
+function beforeTitleEnters(el){
+    el.style.opacity = 0
+    el.style.transform = "translateY(-60px)"
+}
+
+function titleEnters(el){
+    gsap.to(el, {
+        y: 0,
+        opacity:1,
+        duration: 1
+    })
+
+
+}
+
+function afterTitleEnters(el){
+  
+
+  
+
+
+
+}
+
+function beforeBarEnters(el){
+    // el.style.opacity = 0
+    el.style.width = '0%'
+    el.style.opacity = 0
+
+
+}
+function afterBarEnters(el){
+
+  
+}
+
+function barEnters(el){
+    gsap.to(el, {
+        opacity:1,
+        width: "90%",
+        duration: 1,
+        // delay: 1
+
+    })
+
+
+}
+
+
+
+
 // Actions
 </script>
 
 
 <template>
     <div class="showcase-section">
-        <!-- <div class="container"> -->
             <div class="bg-image"></div>
             <div class="showcase-content">
-                <p class="showcase-text">Your <span class="accent-logo">Quest</span> for the perfect home ends here</p>
+                <Transition appear @before-enter="beforeTitleEnters" @enter="titleEnters" @after-enter="afterTitleEnters"><p class="showcase-text">Your <span class="accent-logo">Quest</span>  for the perfect home ends here</p></Transition>
+                <Transition appear @before-enter="beforeBarEnters" @enter="barEnters" @after-enter="afterBarEnters" >
                 <div class="showcase-form">
                     <form v-on:submit="handleSubmit"  action="">
                         <div>
@@ -89,8 +143,8 @@ emit("search", search)
                         </span>
                     </form>
                 </div>
+                </Transition>
             </div>
-    <!-- </div> -->
     </div>
 </template>
 
@@ -159,21 +213,6 @@ form > * {
 
 }
 
-.clear-icon::after {
-    content: "clear current search";
-    /* background-color: #9d9c9c; */
-    width: 140px;
-    position: absolute;
-    top: 3px;
-    right: 10px;
-    font-size: 10px;
-    text-transform: lowercase;
-    opacity: 0;
-    transform: translateX(5%);
-    transition: transform 0.5s ease;
-
-
-}
 
 .clear-icon:hover::after{
     opacity: 1;
@@ -216,12 +255,27 @@ form > * {
     gap: 20px;
 
 
-    opacity: 0;
+    /* opacity: 0;
     transform: translateY(-50px);
     animation: slide-in 1s ease forwards;
-    animation-delay: 0.8s;
+    animation-delay: 0.8s; */
 }
 
+/* .title-enter-from {
+    opacity: 0;
+    transform: translateY(-50px);
+
+
+}
+
+.title-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.title-enter-active {
+    transition: all 1s ease;
+} */
 
 /* .container {
     position: relative;
@@ -244,10 +298,36 @@ form > * {
 }
 
 .showcase-form {
-    width: 90%;
+    /* width: 90%; */
     display: flex;
     justify-content: center; 
+
+
+    /* Adds animation to gradually expand the search bar */
+    /* animation: expand-bar 0.8s ease forwards;
+    animation-delay: 2s; */
 }
+
+/* .bar-enter-from{
+    width: 0%;
+    opacity: 0;
+
+
+}
+
+.bar-enter-to {
+    width: 90%;
+    opacity: 1;
+   
+
+}
+
+.bar-enter-active {
+    transition: all 1s ease;
+    transition-delay: 1.5s;
+
+
+} */
 
 .showcase-form form {
     display: flex;
@@ -341,6 +421,13 @@ form > * {
     100%{
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes expand-bar{
+    100%{
+        opacity: 1;
+        width: 90%;
     }
 }
 

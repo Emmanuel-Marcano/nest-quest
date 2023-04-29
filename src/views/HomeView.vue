@@ -1,5 +1,6 @@
 <script setup>
 import {ref, watch, onMounted, onUpdated} from 'vue'
+import gsap from 'gsap'
 
 import Showcase from '../components/Showcase.vue'
 import PropertyCard from '../components/PropertyCard.vue'
@@ -46,6 +47,33 @@ function onInputChange(ev){
 
 }
 
+//  CSS Transitions
+
+function beforeCardEnters(el){
+  el.style.opacity = 0
+  el.style.transform = "translateY(-50px)"
+  
+
+}
+
+function cardEnters(el){
+  gsap.to(el, {
+        y: 0,
+        opacity:1,
+        duration: 1,
+    })
+
+
+}
+
+function afterCardEnters(el){
+ 
+
+
+
+}
+
+
 </script>
 
 
@@ -55,14 +83,14 @@ function onInputChange(ev){
     <main>
         <div class="container">
             <div class="properties-container">
-              <PropertyCard v-if="filteredProperties.length"  v-for="filteredProperty in filteredProperties" :key="filteredProperty.id" :property="filteredProperty"/>
-              <NoResults v-else/>
+              <TransitionGroup appear @before-enter="beforeCardEnters" @enter="cardEnters" @after-enter="afterCardEnters">
+              <PropertyCard v-for="filteredProperty in filteredProperties" 
+              :key="filteredProperty.id" 
+              :property="filteredProperty"/>
+              </TransitionGroup>
            </div>
         </div>
-    </main>
-
-   
-  
+      </main>
 </template>
 
 

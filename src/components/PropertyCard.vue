@@ -165,6 +165,10 @@ img{
     text-decoration: none;
 }
 
+.details-btn:hover {
+    background-color: rgba(235, 84, 64, 0.8);
+}
+
 
 /* .info-icon {
     width: 100px;

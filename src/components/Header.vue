@@ -3,7 +3,9 @@ import { RouterLink } from 'vue-router'
 
 import {ref} from 'vue'
 
+let emit = defineEmits(["modal-clicked"])
 
+let modalClick =  ref(false)
 let menuIsOpen = ref(false)
 let openedIcon = "fa-solid fa-bars fa-2x"
 let closedIcon = "fa-solid fa-xmark fa-2x"
@@ -14,6 +16,13 @@ let closedIcon = "fa-solid fa-xmark fa-2x"
 function handleMenu(){
     menuIsOpen.value = !menuIsOpen.value
 }
+
+function handleModalClick(){
+    modalClick.value = !modalClick.value
+
+}
+
+emit("modal-clicked", modalClick)
 
 </script>
 
@@ -41,7 +50,7 @@ function handleMenu(){
                 <ul>
                     <li><RouterLink class="router-link text-muted" active-class="active" to="/">Houses </RouterLink></li>
                     <li><RouterLink class="router-link text-muted" active-class="active" to="/MyProperties">My Properties</RouterLink></li>
-                    <li><button class="nav-create-new-btn"> <img class="plus-icon" src="../assets/images/house-icon.png" alt="">Create New</button></li>
+                    <li><button v-on:click="handleModalClick" class="nav-create-new-btn"> <img class="plus-icon" src="../assets/images/house-icon.png" alt="">Create New</button></li>
                 </ul>
             </nav>
 

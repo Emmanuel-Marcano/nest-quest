@@ -10,14 +10,19 @@
 
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
-    /* font-family: sans-serif; */
-    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
     font-family: 'Lato', sans-serif;
     margin: 0;
     /* background-color: #d8d8d8; */
 }
 
+
+/* Form elements like the button, input, textarea and select dont inherit properties. Therefore,
+im explictly telling it to inherit the font-family value declared in the body */
 button, input, select, textarea {
     font-family: inherit;
 }

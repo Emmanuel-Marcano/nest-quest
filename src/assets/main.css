@@ -1,17 +1,17 @@
+/* Imports the declarations in the base.css */
 @import './base.css';
 
-/* #app {
-  max-width: 1280px;
+
+/******* Defining global declarations that will be used across my entire application ******/
+
+
+/* Used it to hold my components  */
+.container {
+  width: 90%;
+ 
+  max-width: 1260px;
   margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
-} */
-
-/* img {
-  width: 100%;
-  height: 100%;
-} */
+}
 
 
 
@@ -41,9 +41,5 @@
   font-weight: bold;
 }
 
-.container {
-  width: 90%;
-  max-width: 1260px;
-  margin: 0 auto;
-  /* border: 2px solid black; */
-}
+
+
