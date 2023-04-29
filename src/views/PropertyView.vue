@@ -1,13 +1,18 @@
 <script setup>
 import {useRoute} from 'vue-router'
+import usePropertyFetch from '../composables/usePropertyFetch';
+import router from '../router'
 import gsap from 'gsap'
 import { ref, onMounted} from 'vue';
 
-const fetchOptions = {
-    headers: {
-      "X-Api-Key": "06mRI1jJ7CbUWDNtMFyvhP3oO4A_a5Tl"
-    }
-  }
+
+const {getProperties, deleteProperty} = usePropertyFetch()
+
+
+
+  
+
+
 
 let route = useRoute()
 let newInteriorImage = ref("")
@@ -37,9 +42,8 @@ let property = ref({
 
 // Lifecycle methods
 onMounted(async function(){
-  let response = await fetch("https://api.intern.d-tt.nl/api/houses", fetchOptions)
-  let data = await response.json()
-  properties.value = data;
+  let response = await getProperties()
+  properties.value = response.data;
   property.value = properties.value.find(function(property){
     return property.id === parseInt(route.params.id)
     })
@@ -52,12 +56,26 @@ onMounted(async function(){
       newInteriorImage.value = response.url
   }
 
+  async function handleDeletion(){
+   let deletionResponse = prompt("are you sure you want to delete?")
+   if(deletionResponse === 'Yes'){
+        deleteProperty(route.params.id).then(function(response){
+          console.log(`Property deleted = ${response}`)
+        })
+    }
+    else{
+      router.push('/MyProperties')
+    }
+        
+
+   
+  }
+
   fetchImage()
 </script>
 
 
 <template>
- 
     <div class="container">
       <div class="property-images">
     <img class="exterior-image"  :src="property.image" alt="">
@@ -77,21 +95,17 @@ onMounted(async function(){
             <li> Description = {{ property.description }}</li>
             <li> Construction Year = {{ property.constructionYear }}</li>
             <li> Price = {{ property.price }}</li>
+            <button class="delete-btn" v-on:click="handleDeletion">Delete</button>
           </ul>
         </div>
-        <div >
-          <!-- <div class="prop"> -->
           <div class="property-card">
             <div class="property-price">
               <div class="price-label">
                 <img src="../assets/images/ic_price@3x.png" alt="">
-               
                 <span>{{ property.price }}</span>
               </div>
             </div>
           </div>
-        <!-- </div> -->
-        </div>
       </div>
     </div>
     <div class="long-height"></div>
@@ -184,7 +198,18 @@ onMounted(async function(){
 }
 
 .long-height{
-  height: 1000px;
+  height: 150px;
+}
+
+.delete-btn{
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: 700;
+
+
 }
 
 

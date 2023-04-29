@@ -1,6 +1,7 @@
 <script setup>
 // Imports
 import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 import CreatePropertyModal from './components/CreatePropertyModal.vue';
 import { RouterView } from 'vue-router'
 import { ref, watch } from 'vue';
@@ -34,6 +35,7 @@ function closeModal(e){
     <Header @modal-clicked="handleModalClick"/>
     <CreatePropertyModal @close-modal="closeModal" v-show="showModal"/>
     <RouterView/>
+    <Footer/>
 </template>
 
 

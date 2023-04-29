@@ -1,10 +1,8 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-
 import {ref} from 'vue'
 
 let emit = defineEmits(["modal-clicked"])
-
 let modalClick =  ref(false)
 let menuIsOpen = ref(false)
 let openedIcon = "fa-solid fa-bars fa-2x"
@@ -25,9 +23,6 @@ function handleModalClick(){
 emit("modal-clicked", modalClick)
 
 </script>
-
-
-
 
 <template>
     <header>
@@ -69,8 +64,6 @@ emit("modal-clicked", modalClick)
     font-weight: 400;
     font-size: 20px;
     transition: color 0.4s ease;
-   
-
 }
 
 .active{
@@ -176,20 +169,13 @@ i {
 
 @media only screen and (min-width: 700px) {
     .desktop-navigation ul {
-        
         display: flex;
     }
-
-
 
     .mobile-navigation {
     display: none;
    }
-
-
 }
-
-
 
 
 @keyframes slide-in {

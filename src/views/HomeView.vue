@@ -1,18 +1,10 @@
 <script setup>
-import {ref, watch, onMounted, onUpdated} from 'vue'
+import {ref, watch, onMounted} from 'vue'
+const {getProperties} = usePropertyFetch()
 import gsap from 'gsap'
-
+import usePropertyFetch from '../composables/usePropertyFetch'
 import Showcase from '../components/Showcase.vue'
 import PropertyCard from '../components/PropertyCard.vue'
-import NoResults from '../components/NoResults.vue'
-
-
-// Start up
-const fetchOptions = {
-    headers: {
-      "X-Api-Key": "06mRI1jJ7CbUWDNtMFyvhP3oO4A_a5Tl"
-    }
-  }
 
 
 
@@ -23,17 +15,13 @@ let filteredProperties = ref([])
 
 // Lifecycle methods
 onMounted(async function(){
-  let response = await fetch("https://api.intern.d-tt.nl/api/houses", fetchOptions)
-  let data = await response.json()
-//   console.log(data)
-  properties.value = data;
-  filteredProperties.value = data
+  let response = await getProperties()
+  properties.value = response.data;
+  filteredProperties.value = response.data
 })
 
 
 function onInputChange(ev){
-//   console.log("Oninput")
-
      watch(ev, function(){
      console.log(ev.cityInput)
      filteredProperties.value = properties.value.filter(function(property){
