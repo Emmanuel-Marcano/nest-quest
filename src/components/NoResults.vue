@@ -7,7 +7,7 @@
 
     <div>
 
-        <img src="../assets/images/under-construction.png" alt="">
+        <!-- <img src="../assets/images/under-construction.png" alt=""> -->
 
         <p>No results! Sorry about that. Dont get your hopes down! Maybe your dream house is currently getting built.</p> 
     </div>

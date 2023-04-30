@@ -2,18 +2,20 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import usePropertyFetch from '../composables/usePropertyFetch';
+import router from '../router';
 
 const {createProperty} = usePropertyFetch()
 
 
+
 let property = reactive({
-    price: "",
+    price: "20",
     bedrooms: "1",
     bathrooms: "1",
     size: "1",
     streetName: "",
-    houseNumber: "",
-    numberAddition: "",
+    houseNumber: "81",
+    numberAddition: "1",
     zip: "",
     city: "",
     constructionYear: "",
@@ -25,41 +27,56 @@ let closeModal = ref(false)
 let emit = defineEmits(["close-modal"])
 
 function handleCloseModal(){
-    property.price = ""
-    property.bedrooms = 1
-    property.bathrooms = 1
-    property.size = 1
-    property.streetName = ""
-    property.houseNumber = "21"
-    property.numberAddition = "1"
-    property.zip = ""
-    property.city = ""
-    property.constructionYear = ""
-    property.hasGarage = false
-    property.description = ""
+    // property.price = ""
+    // property.bedrooms = 1
+    // property.bathrooms = 1
+    // property.size = 1
+    // property.streetName = ""
+    // property.houseNumber = "21"
+    // property.numberAddition = "1"
+    // property.zip = ""
+    // property.city = ""
+    // property.constructionYear = ""
+    // property.hasGarage = false
+    // property.description = ""
     closeModal.value = !closeModal.value
 }
 
 async function handleSubmit(event){
     event.preventDefault();
+
+    const data = {
+        price: property.price,
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        size: property.size,
+        streetName: property.streetName,
+        houseNumber: property.houseNumber,
+        numberAddition: property.numberAddition,
+        zip: property.zip,
+        city: property.city,
+        constructionYear: property.constructionYear,
+        hasGarage: property.hasGarage,
+        description: property.description
+    }
+
+   
+
+    console.log(data)
+
     let errorArray = []
     let creationResponse = prompt("Are you sure you want to create?")
     if(creationResponse === 'Yes'){
         createProperty(data).then(function(response){
             console.log(`Property created = ${response}`)
         })
+        closeModal.value = !closeModal.value
+        console.log("did it")
+        window.location = "http://localhost:8080/MyProperties"
     }
 
 
-    console.log(property.city)
-    console.log(property.street)
-    console.log(property.zip)
-    console.log(property.price)
-    console.log(property.bedrooms)
-    console.log(property.bathrooms)
-    console.log(property.size)
-    console.log(property.hasGarage)
-    console.log(property.description)
+   
 }
 
 function clearAllInputs(){
@@ -85,25 +102,25 @@ emit("close-modal", closeModal)
                     <div class="form-icon">
                      <img src="../assets/images/ic_location@3x.png" alt="">
                     </div>
-                    <input v-model="property.city" placeholder="City" type="text" required>
+                    <input v-model="property.city" placeholder="City" type="text">
                 </div>
                 <div class="form-control">
                     <div class="form-icon">
                         <i class="fa-solid fa-house fa-2x"></i>
                     </div>
-                    <input v-model="property.street" placeholder="Street" type="text" required>
+                    <input v-model="property.streetName" placeholder="Street" type="text">
                 </div>
                 <div class="form-control">
                     <div class="form-icon">
                         <i class="fa-regular fa-hashtag fa-2x"></i>
                     </div>
-                    <input v-model="property.zip" placeholder="Zip Code" type="text" required>
+                    <input v-model="property.zip" placeholder="Zip Code" type="text">
                 </div>
                 <div class="form-control">
                     <div class="form-icon">
                         <img src="../assets/images/ic_bed@3x.png" alt="">
                     </div>
-                    <select v-model="property.bedrooms" name="" id="" required>
+                    <select v-model="property.bedrooms" name="" id="">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -116,7 +133,7 @@ emit("close-modal", closeModal)
                     <div class="form-icon">
                         <img src="../assets/images/ic_bath@3x.png" alt="">
                     </div>
-                    <select v-model="property.bathrooms"  id="" required>
+                    <select v-model="property.bathrooms"  id="">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -129,7 +146,7 @@ emit("close-modal", closeModal)
                     <div class="form-icon">
                         <img src="../assets/images/ic_size@3x.png" alt="">
                     </div>
-                    <select v-model="property.size" name="" id="" required>
+                    <select v-model="property.size" name="" id="">
                                 <option value="50">50+</option>
                                 <option value="100">100+</option>
                                 <option value="150">150+</option>
@@ -140,9 +157,9 @@ emit("close-modal", closeModal)
                     <div class="form-icon">
                         <img src="../assets/images/ic_garage@3x.png" alt="">
                     </div>
-                    <select v-model="property.hasGarage" name="" id="" required>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>      
+                    <select v-model="property.hasGarage" name="" id="" >
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>      
                     </select>
                 </div>
 
@@ -150,14 +167,14 @@ emit("close-modal", closeModal)
                     <div class="form-icon">
                         <img src="../assets/images/ic_construction_date@3x.png" alt="">
                     </div>
-                    <input v-model="property.constructionYear" placeholder="Enter construction year" type="text" required>
+                    <input v-model="property.constructionYear" placeholder="Enter construction year" type="text">
                 </div>
 
                 <div class="form-control">
                     <div class="form-icon">
                         <img src="../assets/images/ic_price@3x.png" alt="">
                     </div>
-                    <input v-model="property.price" placeholder="Enter price" type="text" required>
+                    <input v-model="property.price" placeholder="Enter price" type="text">
                 </div>
               
                 <div class="form-control description">

@@ -10,10 +10,6 @@ const {property} = defineProps(['property'])
 
 <div class="property-card">
                 <div class="property-image">
-                    <div v-show="property.madeByMe" class="edit-property">
-                        <img src="../assets/images/ic_edit_white@3x.png" alt="">
-                        <img src="../assets/images/ic_delete_white@3x.png" alt="">
-                    </div>
                     <img :src="property.image" alt="">
                 </div>
                 <!-- holds the info and adds padding all around -->
@@ -73,22 +69,10 @@ img{
 }
 
 .property-image{
-    position: relative;
     height: 220px;
 }
 
-.edit-property {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
 
-.edit-property img {
-    width: 15px;
-    height: 20px;
-    margin-left: 20px;
-    cursor: pointer;
-}
 
 .property-info{
     padding: 15px;

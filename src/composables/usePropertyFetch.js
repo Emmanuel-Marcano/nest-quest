@@ -17,7 +17,8 @@ export default function(){
         let response = await axios({
             method: "post",
             url: "https://api.intern.d-tt.nl/api/houses",
-            headers: {"X-Api-Key": apiKey }
+            headers: {"X-Api-Key": apiKey},
+            data: data
         })
         return response
     }
@@ -26,7 +27,8 @@ export default function(){
         let response = await axios({
             method: "post",
             url: `https://api.intern.d-tt.nl/api/houses/${id}`,
-            headers: {"X-Api-Key": apiKey }
+            headers: {"X-Api-Key": apiKey,
+                     "Content-Type": "multipart/form-data" }
         })
         return response
     }

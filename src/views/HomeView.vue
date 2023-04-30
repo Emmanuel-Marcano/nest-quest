@@ -16,6 +16,7 @@ let filteredProperties = ref([])
 // Lifecycle methods
 onMounted(async function(){
   let response = await getProperties()
+  console.log(response.data)
   properties.value = response.data;
   filteredProperties.value = response.data
 })

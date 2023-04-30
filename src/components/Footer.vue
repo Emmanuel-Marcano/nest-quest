@@ -36,7 +36,7 @@ div {
     gap: 40px;
     color: var(--secondary-color);
     color: white;
-    font-weight: 400 ;
+    font-weight: 300 ;
 }
 
 img{
