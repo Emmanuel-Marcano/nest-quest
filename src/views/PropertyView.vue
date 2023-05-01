@@ -1,22 +1,18 @@
 <script setup>
 import {useRoute} from 'vue-router'
+import CreatePropertyModal from '../components/CreatePropertyModal.vue';
 import usePropertyFetch from '../composables/usePropertyFetch';
+import { usePropertiesStore } from '../stores/PropertyStore';
 import router from '../router'
 import gsap from 'gsap'
-import { ref, onMounted} from 'vue';
+import { ref, onMounted, watch} from 'vue';
 
 
+const propertyStore = usePropertiesStore()
 const {getProperties, deleteProperty} = usePropertyFetch()
-
-
-
-  
-
-
-
-let route = useRoute()
+const route = useRoute()
+let showEditModal = ref(false)
 let newInteriorImage = ref("")
-let properties = ref([])
 let property = ref({
     constructionYear: 0,
     createdAt: "",
@@ -42,12 +38,13 @@ let property = ref({
 
 // Lifecycle methods
 onMounted(async function(){
-  let response = await getProperties()
-  properties.value = response.data;
-  property.value = properties.value.find(function(property){
-    return property.id === parseInt(route.params.id)
-    })
+ await propertyStore.getProperties()
+ property.value = propertyStore.findByID(parseInt(route.params.id))
 })
+
+
+
+
 
 // Fetches a random interior decoration image from the unsplash api
   async function fetchImage(){
@@ -59,18 +56,42 @@ onMounted(async function(){
   async function handleDeletion(){
    let deletionResponse = prompt("are you sure you want to delete?")
    if(deletionResponse === 'Yes'){
-        deleteProperty(route.params.id).then(function(response){
+          propertyStore.deleteProperty(route.params.id).then(function(response){
           console.log(`Property deleted = ${response}`)
+          window.location = "http://localhost:8080/MyProperties"
         })
-        window.location = "http://localhost:8080/"
+       
     }
 
     else{
       router.push('/MyProperties')
     }
-        
+      
+  }
 
-   
+
+  async function handleEdit(){
+    // propertyStore.findByID(parseInt(route.params.id))
+
+    showEditModal.value = !showEditModal.value
+
+    
+
+
+  }
+
+  function closeModal(e){
+
+    watch(e, function(){
+    console.log(e.value)
+    showEditModal.value = !showEditModal.value
+    
+  })
+
+
+  
+
+
   }
 
   fetchImage()
@@ -78,6 +99,8 @@ onMounted(async function(){
 
 
 <template>
+    <CreatePropertyModal @close-modal="closeModal" :editProperty="property" v-if="showEditModal"/>
+    
     <div class="container">
       <div class="property-images">
         <img class="exterior-image"  :src="property.image" alt="">
@@ -99,7 +122,7 @@ onMounted(async function(){
           </ul>
           <div v-show="property.madeByMe" class="edit-delete-btns">
             <button class="upload-btn">Upload image</button>
-            <button class="edit-btn">Edit</button>
+            <button @click="handleEdit" class="edit-btn">Edit</button>
             <button class="delete-btn" v-on:click="handleDeletion">Delete</button>
           </div>
         </div>
@@ -279,6 +302,7 @@ ul{
   padding: 15px 0;
   text-align: center;
   color: var(--secondary-color);
+  /* color: rgb(121, 121, 121); */
  
   
 }

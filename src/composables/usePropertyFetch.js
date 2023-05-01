@@ -23,12 +23,12 @@ export default function(){
         return response
     }
 
-    async function editProperty(id){
+    async function editProperty(id, data){
         let response = await axios({
             method: "post",
             url: `https://api.intern.d-tt.nl/api/houses/${id}`,
-            headers: {"X-Api-Key": apiKey,
-                     "Content-Type": "multipart/form-data" }
+            headers: {"X-Api-Key": apiKey,"Content-Type": "multipart/form-data" },
+            data: data
         })
         return response
     }

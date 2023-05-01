@@ -85,7 +85,7 @@ img{
 
 .property-location h2 {
     margin: 0;
-    
+    font-weight: 400;
 }
 
 .property-location  p {

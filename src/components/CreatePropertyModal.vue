@@ -2,17 +2,23 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import usePropertyFetch from '../composables/usePropertyFetch';
+import { usePropertiesStore } from '../stores/PropertyStore';
 import router from '../router';
 
-const {createProperty} = usePropertyFetch()
+
+const {editProperty} = defineProps(['editProperty'])
+
+const propertyStore = usePropertiesStore()
+
+// const {createProperty} = usePropertyFetch()
 
 
 
 let property = reactive({
-    price: "20",
-    bedrooms: "1",
-    bathrooms: "1",
-    size: "1",
+    price: "0.00",
+    bedrooms: "",
+    bathrooms: "",
+    size: "",
     streetName: "",
     houseNumber: "81",
     numberAddition: "1",
@@ -22,6 +28,24 @@ let property = reactive({
     hasGarage: false,
     description: ""
 })
+
+// If editProperty is populated, display all of the existing params to the user
+if(editProperty) {
+    property.price = editProperty.price
+    property.bedrooms = editProperty.rooms.bedrooms
+    property.bathrooms = editProperty.rooms.bathrooms
+    property.size = editProperty.size
+    property.streetName = editProperty.location.street
+    property.houseNumber = "20"
+    property.numberAddition = "1"
+    property.zip = editProperty.location.zip
+    property.city = editProperty.location.city
+    property.constructionYear = editProperty.constructionYear
+    property.hasGarage = editProperty.hasGarage
+    property.description = editProperty.description
+}
+
+
 
 let closeModal = ref(false)
 let emit = defineEmits(["close-modal"])
@@ -44,39 +68,30 @@ function handleCloseModal(){
 
 async function handleSubmit(event){
     event.preventDefault();
+    
 
-    const data = {
-        price: property.price,
-        bedrooms: property.bedrooms,
-        bathrooms: property.bathrooms,
-        size: property.size,
-        streetName: property.streetName,
-        houseNumber: property.houseNumber,
-        numberAddition: property.numberAddition,
-        zip: property.zip,
-        city: property.city,
-        constructionYear: property.constructionYear,
-        hasGarage: property.hasGarage,
-        description: property.description
-    }
-
-   
-
+    // Spreads all of the properties in the property object into the local data object
+    const data = {...property}
     console.log(data)
 
     let errorArray = []
     let creationResponse = prompt("Are you sure you want to create?")
     if(creationResponse === 'Yes'){
-        createProperty(data).then(function(response){
-            console.log(`Property created = ${response}`)
+
+         if(editProperty){
+            propertyStore.editProperty(editProperty.id, data).then(function(response){
+            console.log(`Property edited = ${response}`)
+            window.location.reload()
         })
-        closeModal.value = !closeModal.value
-        console.log("did it")
-        window.location = "http://localhost:8080/MyProperties"
+         } else {
+            propertyStore.createProperty(data).then(function(response){
+            console.log(`Property created = ${response}`)
+            closeModal.value = !closeModal.value
+            console.log("did it")
+            window.location = "http://localhost:8080/MyProperties"
+        })
+       }
     }
-
-
-   
 }
 
 function clearAllInputs(){
@@ -87,6 +102,10 @@ function clearAllInputs(){
 
 emit("close-modal", closeModal)
 
+
+
+
+
 </script>
 
 <template>
@@ -95,7 +114,8 @@ emit("close-modal", closeModal)
         <div class="modal">
             <div class="modal-title">
                 <img class="modal-icon" src="../assets/images/house-icon.png" alt="">
-                <h1>Create New Property</h1>
+                <h1 v-if="editProperty">Edit Property</h1>
+                <h1 v-else>Create Property</h1>
             </div>
             <form @submit="handleSubmit" class="form-grid" action="">
                 <div class="form-control">
@@ -121,6 +141,7 @@ emit("close-modal", closeModal)
                         <img src="../assets/images/ic_bed@3x.png" alt="">
                     </div>
                     <select v-model="property.bedrooms" name="" id="">
+                                <option value="" disabled selected>No. of Bedrooms</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -133,7 +154,8 @@ emit("close-modal", closeModal)
                     <div class="form-icon">
                         <img src="../assets/images/ic_bath@3x.png" alt="">
                     </div>
-                    <select v-model="property.bathrooms"  id="">
+                    <select  v-model="property.bathrooms"  id="">
+                                <option value="" disabled selected>No. of Bathrooms</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -146,18 +168,15 @@ emit("close-modal", closeModal)
                     <div class="form-icon">
                         <img src="../assets/images/ic_size@3x.png" alt="">
                     </div>
-                    <select v-model="property.size" name="" id="">
-                                <option value="50">50+</option>
-                                <option value="100">100+</option>
-                                <option value="150">150+</option>
-                                <option value="200">200+</option>     
-                    </select>
+
+                    <input v-model="property.size" placeholder="Property Size" type="text">
                 </div>
                 <div class="form-control">
                     <div class="form-icon">
                         <img src="../assets/images/ic_garage@3x.png" alt="">
                     </div>
-                    <select v-model="property.hasGarage" name="" id="" >
+                    <select v-model="property.hasGarage" name="" id="" >   
+                                <option value="" disabled selected>Has Garage</option>
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>      
                     </select>
@@ -182,7 +201,7 @@ emit("close-modal", closeModal)
                 </div>
 
                 <div class="modal-buttons">   
-                    <button class="cancel-btn" v-on:click="handleCloseModal">Cancel</button>
+                    <span class="cancel-btn" @click="handleCloseModal">Cancel</span>
                     <button class="submit-btn">Submit</button>
                 </div>
             </form>
@@ -237,6 +256,16 @@ emit("close-modal", closeModal)
     border: none;
     border-radius: 3px;
     padding: 10px 25px;
+    cursor: pointer;
+}
+
+.modal-buttons span{
+    border: none;
+    border-radius: 3px;
+    padding: 10px 25px;
+    cursor: pointer;
+
+    
 }
 
 .submit-btn {

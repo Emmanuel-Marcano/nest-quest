@@ -1,40 +1,24 @@
 <script setup>
 import {ref, watch, onMounted} from 'vue'
+import { usePropertiesStore } from '../stores/PropertyStore';
 const {getProperties} = usePropertyFetch()
 import gsap from 'gsap'
 import usePropertyFetch from '../composables/usePropertyFetch'
 import Showcase from '../components/Showcase.vue'
 import PropertyCard from '../components/PropertyCard.vue'
 
-
+const propertyStore = usePropertiesStore()
 
 // Data
-let properties = ref([])
-let filteredProperties = ref([])
 
 
 // Lifecycle methods
 onMounted(async function(){
-  let response = await getProperties()
-  console.log(response.data)
-  properties.value = response.data;
-  filteredProperties.value = response.data
+     await propertyStore.getProperties()
 })
 
 
-function onInputChange(ev){
-     watch(ev, function(){
-     console.log(ev.cityInput)
-     filteredProperties.value = properties.value.filter(function(property){
-     return property.location.city.toLowerCase().includes(ev.cityInput.toLowerCase()) && property.rooms.bedrooms >= ev.bedroomsInput && property.rooms.bathrooms >= ev.bathroomsInput && property.size >= ev.sizeInput
 
-//      Creates a new array and stores it in the filteredProperties variable
-//      This avoids the mutation of the original array and allows me to always
-//      return a result instead of mutating the original one until its empty
-})
-})
-
-}
 
 //  CSS Transitions
 
@@ -67,27 +51,28 @@ function afterCardEnters(el){
 
 
 <template>
-     <Showcase @search="onInputChange"/>
-    <p class="text-center">Results: {{ filteredProperties.length }}</p>
+     <Showcase/>
+    <p class="text-center">Available Properties ({{ propertyStore.filteredByUserInput.length }})</p>
     <main>
         <div class="container">
             <div class="properties-container">
               <TransitionGroup appear @before-enter="beforeCardEnters" @enter="cardEnters" @after-enter="afterCardEnters">
-              <PropertyCard v-for="filteredProperty in filteredProperties" 
-              :key="filteredProperty.id" 
-              :property="filteredProperty"/>
+              <PropertyCard v-for="property in propertyStore.filteredByUserInput" 
+              :key="property.id" 
+              :property="property"/>
               </TransitionGroup>
            </div>
         </div>
-      </main>
+    </main>
+
 </template>
 
 
 
 <style scoped>
 main {
-    padding: 20px 0;
-   
+  padding-top: 20px;
+  padding-bottom: 90px;
 }
 
 .properties-container {
@@ -95,7 +80,12 @@ main {
   place-content: center;
   flex-wrap: wrap;
   gap: 100px;
+}
+
+@media only screen and (min-width: 700px) {
   
+
+
 }
 
 

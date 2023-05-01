@@ -1,6 +1,10 @@
 <script setup>
-import { reactive, inject } from 'vue'
+import { reactive, watch } from 'vue'
+import { usePropertiesStore } from '../stores/PropertyStore';
 import gsap from 'gsap'
+
+
+const propertyStore = usePropertiesStore()
 
 
 
@@ -13,7 +17,15 @@ let search = reactive({
 })
 
 
-let emit = defineEmits(["search"])
+// Updates the searchInput state property in Pinia
+watch(search, function(){
+    propertyStore.updateSearchInput(search)   
+})
+
+
+
+
+
 
  
 
@@ -32,11 +44,8 @@ function clearAllFilters(){
 
 function handleSubmit(e){
     e.preventDefault();
-   
-   
-  
 }
-emit("search", search)
+
 
 // CSS TRANSITIONS
 
@@ -367,21 +376,13 @@ form > * {
 
 @media only screen and (min-width: 700px) {
 
-    .showcase-section{
-        margin-bottom: -183px;
-    }
-
-    .showcase-form {
-        margin-bottom: 60px;
-    }
-
-/* hack for overlapping cards */
-
-
+    /* .showcase-form {
+        margin-bottom: 50px;
+    } */
 
 
     .clear-filters {
-        bottom: 180px;
+        bottom: 150px;
         right: 80px;
     }
 

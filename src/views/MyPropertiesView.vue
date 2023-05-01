@@ -1,40 +1,24 @@
 <script setup>
-import { ref, onMounted} from 'vue';
+import {onMounted} from 'vue';
 import PropertyCard from '../components/PropertyCard.vue';
-import usePropertyFetch from '../composables/usePropertyFetch';
+import { usePropertiesStore } from '../stores/PropertyStore';
 
-const {getProperties, deleteProperty} = usePropertyFetch()
-
-
-let properties = ref([])
+const propertyStore = usePropertiesStore()
 
 onMounted(async function(){
-  let response = await getProperties()
-  properties.value = response.data;
-  properties.value = properties.value.filter(function(property){
-    return property.madeByMe
-    })
+     await propertyStore.getProperties()
 })
-
-
-
-
 </script>
 
 
 <template>
     <h1>My properties</h1>
-
-    <div class="properties-container">
-
-    <PropertyCard v-for="property in properties" 
+     <div class="properties-container">
+      <PropertyCard v-for="property in propertyStore.madeByMe" 
               :key="property.id" 
-              :property="property"/>
-
+              :property="property"
+        />
     </div>
-
-   
-  
 </template>
 
 
@@ -44,7 +28,7 @@ onMounted(async function(){
 .properties-container {
     padding: 40px;
   display: flex;
-  place-content: center;
+
   flex-wrap: wrap;
   gap: 100px;
   

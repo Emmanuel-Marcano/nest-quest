@@ -37,7 +37,7 @@ emit("modal-clicked", modalClick)
                 <ul>
                     <li><RouterLink class="router-link text-muted"  active-class="active" to="/">Houses</RouterLink></li>
                     <li><RouterLink class="router-link text-muted" active-class="active" to="/MyProperties">My Properties</RouterLink></li>
-                    <li><button class="nav-create-new-btn"> <img class="plus-icon" src="../assets/images/house-icon.png" alt="">Create New</button></li>
+                    <li><button  v-on:click="handleModalClick" class="nav-create-new-btn"> <img class="plus-icon" src="../assets/images/house-icon.png" alt="">Create New</button></li>
                 </ul>
             </div>
 
