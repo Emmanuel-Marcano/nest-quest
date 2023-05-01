@@ -1,26 +1,27 @@
 <script setup>
-import {ref, watch, onMounted} from 'vue'
+import { onMounted } from 'vue'
 import { usePropertiesStore } from '../stores/PropertyStore';
-const {getProperties} = usePropertyFetch()
 import gsap from 'gsap'
 import usePropertyFetch from '../composables/usePropertyFetch'
 import Showcase from '../components/Showcase.vue'
 import PropertyCard from '../components/PropertyCard.vue'
+import fallbackPropertyCard from '../components/fallbackPropertyCard.vue'
 
 const propertyStore = usePropertiesStore()
 
-// Data
 
 
-// Lifecycle methods
+
+
 onMounted(async function(){
      await propertyStore.getProperties()
+     console.log(propertyStore.properties)
 })
 
 
 
 
-//  CSS Transitions
+// ******** CSS Transitions **********
 
 function beforeCardEnters(el){
   el.style.opacity = 0
@@ -39,32 +40,29 @@ function cardEnters(el){
 
 }
 
-function afterCardEnters(el){
- 
-
-
-
-}
-
 
 </script>
 
 
 <template>
-     <Showcase/>
-    <p class="text-center">Available Properties ({{ propertyStore.filteredByUserInput.length }})</p>
+    <Showcase/>
+    <p class="text-center available-properties">Available Properties ({{ propertyStore.filteredByUserInput.length }})</p>
     <main>
         <div class="container">
-            <div class="properties-container">
-              <TransitionGroup appear @before-enter="beforeCardEnters" @enter="cardEnters" @after-enter="afterCardEnters">
-              <PropertyCard v-for="property in propertyStore.filteredByUserInput" 
-              :key="property.id" 
-              :property="property"/>
-              </TransitionGroup>
-           </div>
+            <div v-if="propertyStore.filteredByUserInput.length" class="properties-container">
+                  <TransitionGroup appear @before-enter="beforeCardEnters" @enter="cardEnters" @after-enter="afterCardEnters">
+                  <PropertyCard  v-for="property in propertyStore.filteredByUserInput" 
+                   :key="property.id" 
+                   :property="property"/>
+                  </TransitionGroup>
+            </div>
+            <div v-else class="properties-container"> 
+                <fallbackPropertyCard/>
+                <fallbackPropertyCard/>
+                <fallbackPropertyCard/>
+            </div>
         </div>
     </main>
-
 </template>
 
 
@@ -81,6 +79,25 @@ main {
   flex-wrap: wrap;
   gap: 100px;
 }
+
+.available-properties {
+  /* font-weight: 700; */
+}
+
+
+
+
+
+@keyframes loading {
+  0%{
+    transform: rotate(0deg);
+  }
+
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
 
 @media only screen and (min-width: 700px) {
   

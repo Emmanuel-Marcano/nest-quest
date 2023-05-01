@@ -3,6 +3,9 @@
 import { inject } from 'vue'
 import { RouterLink } from 'vue-router'
 const {property} = defineProps(['property'])
+
+
+
 </script>
 
 
@@ -10,7 +13,8 @@ const {property} = defineProps(['property'])
 
 <div class="property-card">
                 <div class="property-image">
-                    <img :src="property.image" alt="">
+                    <img v-if="property.image" :src="property.image" alt="">
+                    <img v-else src="../assets/images/ic_mobile_navigarion_home@3x.png" alt="">
                 </div>
                 <!-- holds the info and adds padding all around -->
                 <div class="property-info">

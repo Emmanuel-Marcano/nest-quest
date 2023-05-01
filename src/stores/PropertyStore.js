@@ -1,6 +1,5 @@
 
 import { defineStore } from 'pinia'
-import {ref, reactive, computed} from 'vue'
 import usePropertyFetch from '../composables/usePropertyFetch'
 const {getProperties, createProperty, editProperty, deleteProperty} = usePropertyFetch()
 
@@ -33,12 +32,6 @@ export const usePropertiesStore = defineStore("propertyStore", {
             return property.madeByMe
             })
         },
-
-        
-
-
-        
-
     },
 
     actions: {
@@ -72,8 +65,6 @@ export const usePropertiesStore = defineStore("propertyStore", {
                 return property.id === id })
                 return foundProperty
         }
-
-        
     }
 })
 

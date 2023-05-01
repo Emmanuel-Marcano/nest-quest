@@ -1,15 +1,12 @@
 <script setup>
 import {useRoute} from 'vue-router'
 import CreatePropertyModal from '../components/CreatePropertyModal.vue';
-import usePropertyFetch from '../composables/usePropertyFetch';
 import { usePropertiesStore } from '../stores/PropertyStore';
 import router from '../router'
-import gsap from 'gsap'
 import { ref, onMounted, watch} from 'vue';
 
 
 const propertyStore = usePropertiesStore()
-const {getProperties, deleteProperty} = usePropertyFetch()
 const route = useRoute()
 let showEditModal = ref(false)
 let newInteriorImage = ref("")
@@ -36,7 +33,7 @@ let property = ref({
 })
 
 
-// Lifecycle methods
+
 onMounted(async function(){
  await propertyStore.getProperties()
  property.value = propertyStore.findByID(parseInt(route.params.id))
@@ -80,12 +77,13 @@ onMounted(async function(){
 
   }
 
-  function closeModal(e){
 
+  // Listens for the emit from the modal, when clicked,
+  // Closes edit property modal
+  function closeModal(e){
     watch(e, function(){
     console.log(e.value)
     showEditModal.value = !showEditModal.value
-    
   })
 
 
@@ -103,7 +101,8 @@ onMounted(async function(){
     
     <div class="container">
       <div class="property-images">
-        <img class="exterior-image"  :src="property.image" alt="">
+        <img v-if="property.image" :src="property.image" alt="">
+        <img v-else src="../assets/images/ic_mobile_navigarion_home@3x.png" alt="">
         <img class="interior-image" :src="newInteriorImage" alt="">
       </div>
       <div class="property">
@@ -115,7 +114,7 @@ onMounted(async function(){
             <!-- <li> Zip: {{ property.location.zip }}</li> -->
             <li> <img src="../assets/images/ic_bed@3x.png" alt=""> No. of bedrooms: {{ property.rooms.bedrooms }}</li>
             <li> <img src="../assets/images/ic_bath@3x.png" alt=""> No. of bathrooms: {{ property.rooms.bathrooms }}</li>
-            <li> <img src="../assets/images/ic_garage@3x.png" alt=""> Does it have a garage? {{ property.hasGarage }}</li>
+            <li> <img src="../assets/images/ic_garage@3x.png" alt="">Garage: {{ property.hasGarage? "Yes" : "No" }}</li>
             <li> <img src="../assets/images/ic_size@3x.png" alt=""> Size: {{ property.size }}</li>
             <li> <img src="../assets/images/ic_mobile_navigarion_info@3x.png" alt=""> Description: {{ property.description }}</li>
             <li> <img src="../assets/images/ic_construction_date@3x.png" alt=""> Construction Year: {{ property.constructionYear }}</li>
@@ -128,6 +127,7 @@ onMounted(async function(){
         </div>
           <div class="property-card">
             <div class="property-price">
+              <span class="nest-quest">Nest<span class="accent-logo">Quest</span></span>
               <div class="price-label">
                 <img src="../assets/images/ic_price@3x.png" alt="">
                 <span>{{ property.price }}</span>
@@ -179,6 +179,8 @@ ul{
 
 
 .property{
+  /* padding: 50px 0; */
+  margin-top: 40px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -193,12 +195,18 @@ ul{
 
 .property-card{
   width: 90%;
-  height: 420px;
-  padding: 20px;
+  padding:  20px 15px;
   border-radius: 10px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   margin: 50px 0px;
   background-color: white;
+}
+
+.nest-quest{
+  /* border: 1px solid black; */
+  font-size: 35px;
+  
+  
 }
 
 .property-price {
@@ -206,14 +214,15 @@ ul{
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 90px;
+  padding: 8px 0px;
+  /* border: 1px solid black; */
 }
 
 .price-label{
   position: absolute;
   padding: 5px;
   top: 2px;
-  right: -40px;
+  right: -30px;
   display: flex;
   align-items: center;
   background-color: var(--primary-color);
@@ -240,8 +249,8 @@ ul{
   height: 40px;
 }
 
-.property-price span {
-  font-size: 22px;
+.property-price .price-label {
+  font-size: 20px;
 }
 
 .long-height{
@@ -254,13 +263,13 @@ ul{
   border-top: 1px solid rgb(168, 166, 166);
   border-bottom: 1px solid rgb(168, 166, 166);
   text-align: center;
+  margin-top: 30px;
   padding: 20px 0;
 }
 
 
 .card-buttons button {
   
-  cursor: pointer;
   font-weight: 700;
   border-radius: 5px;
   font-size: 16px;
@@ -280,9 +289,9 @@ ul{
   
 }
 
-.contact-agent:hover {
+/* .contact-agent:hover {
   background-color: rgba(235, 84, 64, 0.8);
-}
+} */
 
 .plan-viewing {
   background-color: transparent;
@@ -292,12 +301,12 @@ ul{
   padding: 10px 0;
 }
 
-.plan-viewing:hover{
+/* .plan-viewing:hover{
   background-color: rgb(250, 250, 250);
-}
+} */
 
 .share {
-  margin-top: 35px;
+  margin-top: 25px;
   border: 1px solid rgb(168, 166, 166);
   padding: 15px 0;
   text-align: center;
@@ -309,7 +318,6 @@ ul{
 
 .share i {
   transition: transform 0.3s ease;
-  cursor: pointer;
 }
 
 .share i:hover {
@@ -377,6 +385,7 @@ li {
   .property {
     flex-direction: row;
     align-items: flex-start;
+    margin-top: 0;
     /* top: -460px; */
    
   }

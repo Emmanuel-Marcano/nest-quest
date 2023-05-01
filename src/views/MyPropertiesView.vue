@@ -26,7 +26,7 @@ onMounted(async function(){
 <style scoped>
 
 .properties-container {
-    padding: 40px;
+    padding: 80px;
   display: flex;
 
   flex-wrap: wrap;

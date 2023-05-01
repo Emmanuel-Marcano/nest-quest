@@ -17,6 +17,7 @@ function handleMenu(){
 
 function handleModalClick(){
     modalClick.value = !modalClick.value
+  
 
 }
 
@@ -35,8 +36,8 @@ emit("modal-clicked", modalClick)
 
             <div class="slide-in-navigation" v-show="menuIsOpen">
                 <ul>
-                    <li><RouterLink class="router-link text-muted"  active-class="active" to="/">Houses</RouterLink></li>
-                    <li><RouterLink class="router-link text-muted" active-class="active" to="/MyProperties">My Properties</RouterLink></li>
+                    <li><RouterLink @click="handleMenu" class="router-link text-muted"  active-class="active" to="/">Houses</RouterLink></li>
+                    <li><RouterLink @click="handleMenu" class="router-link text-muted" active-class="active" to="/MyProperties">My Properties</RouterLink></li>
                     <li><button  v-on:click="handleModalClick" class="nav-create-new-btn"> <img class="plus-icon" src="../assets/images/house-icon.png" alt="">Create New</button></li>
                 </ul>
             </div>

@@ -27,6 +27,7 @@ let property = reactive({
     constructionYear: "",
     hasGarage: false,
     description: ""
+   
 })
 
 // If editProperty is populated, display all of the existing params to the user
@@ -72,9 +73,9 @@ async function handleSubmit(event){
 
     // Spreads all of the properties in the property object into the local data object
     const data = {...property}
-    console.log(data)
+    console.log("fave",data.isFave)
 
-    let errorArray = []
+    let errorsArray = []
     let creationResponse = prompt("Are you sure you want to create?")
     if(creationResponse === 'Yes'){
 
@@ -150,6 +151,10 @@ emit("close-modal", closeModal)
                                 <option value="6">6</option>    
                     </select>
                 </div>
+
+                <!-- <div class="flex"> -->
+
+
                 <div class="form-control">
                     <div class="form-icon">
                         <img src="../assets/images/ic_bath@3x.png" alt="">
@@ -164,6 +169,21 @@ emit("close-modal", closeModal)
                                 <option value="6">6</option>    
                     </select>
                 </div>
+
+                <div class="form-control">
+                    <div class="form-icon">
+                        <img src="../assets/images/ic_garage@3x.png" alt="">
+                    </div>
+                    <select v-model="property.hasGarage" name="" id="" >   
+                                <option value="" disabled selected>Garage</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>      
+                    </select>
+                </div>
+
+              <!-- </div> -->
+
+
                 <div class="form-control">
                     <div class="form-icon">
                         <img src="../assets/images/ic_size@3x.png" alt="">
@@ -171,16 +191,7 @@ emit("close-modal", closeModal)
 
                     <input v-model="property.size" placeholder="Property Size" type="text">
                 </div>
-                <div class="form-control">
-                    <div class="form-icon">
-                        <img src="../assets/images/ic_garage@3x.png" alt="">
-                    </div>
-                    <select v-model="property.hasGarage" name="" id="" >   
-                                <option value="" disabled selected>Has Garage</option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>      
-                    </select>
-                </div>
+               
 
                 <div class="form-control">
                     <div class="form-icon">
@@ -211,6 +222,10 @@ emit("close-modal", closeModal)
 
 
 <style scoped>
+
+/* .flex {
+    border: 1px solid black;
+} */
 
 .modal {
     width: 90%;
