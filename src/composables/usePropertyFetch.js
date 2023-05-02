@@ -42,13 +42,24 @@ export default function(){
         return response
     }
 
-    async function uploadImage(id){
+    async function uploadImage(id, data){
         let response = await axios({
             method: "post",
             url: `https://api.intern.d-tt.nl/api/houses/${id}/upload`,
-            headers: {"X-Api-Key": apiKey }
+            headers: {"X-Api-Key": apiKey, "Content-Type": "multipart/form-data" },
+            data: data
         })
         return response
+
+
+        // let response = await axios.post(`https://api.intern.d-tt.nl/api/houses/${id}/upload`, data,
+        //    {
+        //     headers: {
+        //         "X-Api-Key": apiKey,
+        //         "Content-Type": "multipart/form-data"
+        //     }
+        //   })
+        // return response
     }
 
     return {

@@ -1,13 +1,14 @@
 <script setup>
-import {useRoute} from 'vue-router'
+import { useRoute } from 'vue-router'
 import CreatePropertyModal from '../components/CreatePropertyModal.vue';
 import { usePropertiesStore } from '../stores/PropertyStore';
 import router from '../router'
-import { ref, onMounted, watch} from 'vue';
+import { ref,onMounted, watch } from 'vue';
 
 
 const propertyStore = usePropertiesStore()
 const route = useRoute()
+let selectedImage = ref("")
 let showEditModal = ref(false)
 let newInteriorImage = ref("")
 let property = ref({
@@ -72,9 +73,21 @@ onMounted(async function(){
 
     showEditModal.value = !showEditModal.value
 
-    
+  }
 
+  function handleImageSelection(e){
+    e.preventDefault();
+    selectedImage = e.target.files[0]
+  }
 
+  function handleImageUpload(){
+    console.log(selectedImage)
+    let data =  new FormData()
+    data.append('image', selectedImage)
+    propertyStore.uploadImage(route.params.id, data).then(function(response){
+    console.log(`Image uploaded = ${response}`)
+    window.location.reload()
+    })
   }
 
 
@@ -120,7 +133,12 @@ onMounted(async function(){
             <li> <img src="../assets/images/ic_construction_date@3x.png" alt=""> Construction Year: {{ property.constructionYear }}</li>
           </ul>
           <div v-show="property.madeByMe" class="edit-delete-btns">
-            <button class="upload-btn">Upload image</button>
+            
+                <label for="img">Select image:</label>
+                <input  @change="handleImageSelection" type="file" id="img" name="img" accept="image/*">
+                <!-- <input type="submit"> -->
+                <button @click="handleImageUpload" class="upload-btn">Upload image</button>
+          
             <button @click="handleEdit" class="edit-btn">Edit</button>
             <button class="delete-btn" v-on:click="handleDeletion">Delete</button>
           </div>
@@ -188,10 +206,10 @@ ul{
   border-bottom: 1px solid rgb(199, 199, 199);
 }
 
-.property-details {
+/* .property-details {
  
   
-}
+} */
 
 .property-card{
   width: 90%;
@@ -204,7 +222,7 @@ ul{
 
 .nest-quest{
   /* border: 1px solid black; */
-  font-size: 35px;
+  font-size: 28px;
   
   
 }
@@ -214,7 +232,7 @@ ul{
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 0px;
+  padding: 15px 0px;
   /* border: 1px solid black; */
 }
 

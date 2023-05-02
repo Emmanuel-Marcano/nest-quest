@@ -1,7 +1,7 @@
 
 <script setup>
-import { ref, reactive } from 'vue';
-import usePropertyFetch from '../composables/usePropertyFetch';
+import { ref, reactive, watch } from 'vue';
+import useErrorHandler from '../composables/useErrorHandler'
 import { usePropertiesStore } from '../stores/PropertyStore';
 import router from '../router';
 
@@ -10,12 +10,13 @@ const {editProperty} = defineProps(['editProperty'])
 
 const propertyStore = usePropertiesStore()
 
-// const {createProperty} = usePropertyFetch()
 
 
+
+let errorsArray = ref([])
 
 let property = reactive({
-    price: "0.00",
+    price: "",
     bedrooms: "",
     bathrooms: "",
     size: "",
@@ -25,13 +26,14 @@ let property = reactive({
     zip: "",
     city: "",
     constructionYear: "",
-    hasGarage: false,
+    hasGarage: "",
     description: ""
    
 })
 
 // If editProperty is populated, display all of the existing params to the user
 if(editProperty) {
+    console.log("from editing")
     property.price = editProperty.price
     property.bedrooms = editProperty.rooms.bedrooms
     property.bathrooms = editProperty.rooms.bathrooms
@@ -52,30 +54,39 @@ let closeModal = ref(false)
 let emit = defineEmits(["close-modal"])
 
 function handleCloseModal(){
-    // property.price = ""
-    // property.bedrooms = 1
-    // property.bathrooms = 1
-    // property.size = 1
-    // property.streetName = ""
-    // property.houseNumber = "21"
-    // property.numberAddition = "1"
-    // property.zip = ""
-    // property.city = ""
-    // property.constructionYear = ""
-    // property.hasGarage = false
-    // property.description = ""
+    property.price= "",
+    property.bedrooms= "",
+    property.bathrooms= "",
+    property.size= "",
+    property.streetName= "",
+    property.houseNumber= "81",
+    property.numberAddition= "1",
+    property.zip= "",
+    property.city= "",
+    property.constructionYear= "",
+    property.hasGarage= "",
+    property.description= ""
+    errorsArray.value = []
     closeModal.value = !closeModal.value
 }
+
+
 
 async function handleSubmit(event){
     event.preventDefault();
     
+ 
+    console.log(property)
 
-    // Spreads all of the properties in the property object into the local data object
+  
+    errorsArray.value = useErrorHandler(property)
+    console.log(errorsArray)
+
+    
+
+   if(!errorsArray.value.length) {
+
     const data = {...property}
-    console.log("fave",data.isFave)
-
-    let errorsArray = []
     let creationResponse = prompt("Are you sure you want to create?")
     if(creationResponse === 'Yes'){
 
@@ -93,7 +104,16 @@ async function handleSubmit(event){
         })
        }
     }
+  }
 }
+
+
+
+
+
+
+
+
 
 function clearAllInputs(){
    
@@ -216,6 +236,8 @@ emit("close-modal", closeModal)
                     <button class="submit-btn">Submit</button>
                 </div>
             </form>
+
+            <p class="error-messages" v-show="errorsArray.length" >{{ errorsArray.join()}}</p>
         </div>
     </div>
 </template>
@@ -347,6 +369,10 @@ img{
     color:rgb(150, 150, 150);
 }
 
+
+.error-messages{
+    color: red;
+}
 
 
 

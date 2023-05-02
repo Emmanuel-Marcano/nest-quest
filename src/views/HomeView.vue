@@ -15,7 +15,7 @@ const propertyStore = usePropertiesStore()
 
 onMounted(async function(){
      await propertyStore.getProperties()
-     console.log(propertyStore.properties)
+    //  console.log(propertyStore.properties)
 })
 
 

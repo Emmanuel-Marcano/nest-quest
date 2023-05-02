@@ -1,7 +1,7 @@
 
 import { defineStore } from 'pinia'
 import usePropertyFetch from '../composables/usePropertyFetch'
-const {getProperties, createProperty, editProperty, deleteProperty} = usePropertyFetch()
+const {getProperties, createProperty, editProperty, deleteProperty, uploadImage} = usePropertyFetch()
 
 export const usePropertiesStore = defineStore("propertyStore", {
     state: function() {
@@ -52,6 +52,11 @@ export const usePropertiesStore = defineStore("propertyStore", {
 
         async deleteProperty(id){
             let response = await deleteProperty(id)
+            return response
+        },
+
+        async uploadImage(id, data){
+            let response = await uploadImage(id, data)
             return response
         },
 
