@@ -7,14 +7,12 @@ import router from '../router';
 
 
 const {editProperty} = defineProps(['editProperty'])
-
 const propertyStore = usePropertiesStore()
 
 
 
 
 let errorsArray = ref([])
-
 let property = reactive({
     price: "",
     bedrooms: "",
@@ -74,37 +72,27 @@ function handleCloseModal(){
 
 async function handleSubmit(event){
     event.preventDefault();
-    
- 
     console.log(property)
-
-  
     errorsArray.value = useErrorHandler(property)
-    console.log(errorsArray)
-
-    
-
    if(!errorsArray.value.length) {
-
     const data = {...property}
     let creationResponse = prompt("Are you sure you want to create?")
-    if(creationResponse === 'Yes'){
-
-         if(editProperty){
-            propertyStore.editProperty(editProperty.id, data).then(function(response){
-            console.log(`Property edited = ${response}`)
-            window.location.reload()
-        })
-         } else {
-            propertyStore.createProperty(data).then(function(response){
-            console.log(`Property created = ${response}`)
-            closeModal.value = !closeModal.value
-            console.log("did it")
-            window.location = "http://localhost:8080/MyProperties"
-        })
-       }
-    }
-  }
+        if(creationResponse === 'Yes'){
+            if(editProperty){
+                propertyStore.editProperty(editProperty.id, data).then(function(response){
+                console.log(`Property edited = ${response}`)
+                window.location.reload()
+            })
+            } else {
+                propertyStore.createProperty(data).then(function(response){
+                console.log(`Property created = ${response}`)
+                closeModal.value = !closeModal.value
+                console.log("did it")
+                window.location = "http://localhost:8080/MyProperties"
+            })
+         }
+      }
+   }
 }
 
 
@@ -122,11 +110,6 @@ function clearAllInputs(){
 }
 
 emit("close-modal", closeModal)
-
-
-
-
-
 </script>
 
 <template>
@@ -236,8 +219,7 @@ emit("close-modal", closeModal)
                     <button class="submit-btn">Submit</button>
                 </div>
             </form>
-
-            <p class="error-messages" v-show="errorsArray.length" >{{ errorsArray.join()}}</p>
+            <p class="error-messages" v-show="errorsArray.length" >{{ errorsArray.join(" ")}}</p>
         </div>
     </div>
 </template>

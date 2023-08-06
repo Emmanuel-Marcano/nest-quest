@@ -51,15 +51,6 @@ export default function(){
         })
         return response
 
-
-        // let response = await axios.post(`https://api.intern.d-tt.nl/api/houses/${id}/upload`, data,
-        //    {
-        //     headers: {
-        //         "X-Api-Key": apiKey,
-        //         "Content-Type": "multipart/form-data"
-        //     }
-        //   })
-        // return response
     }
 
     return {

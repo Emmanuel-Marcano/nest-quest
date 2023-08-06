@@ -2,7 +2,14 @@
 <script setup>
 import { inject } from 'vue'
 import { RouterLink } from 'vue-router'
+import { usePropertiesStore } from '../stores/PropertyStore';
+const propertyStore = usePropertiesStore()
 const {property} = defineProps(['property'])
+
+let favorite = false;
+ favorite = propertyStore.favoriteProperties.some(function(prop){
+    return prop.id === property.id
+})
 
 
 
@@ -25,6 +32,7 @@ const {property} = defineProps(['property'])
                             <p  class="text-muted">{{ property.location.street }}</p>
                             <span class="text-muted">{{ property.location.zip }}</span>
                         </div>
+                        <i v-show="favorite" class="favorite fa-solid fa-heart fa-2x"></i>
                     </div>
                     <div class="property-utilities">
                         <div>
@@ -41,7 +49,7 @@ const {property} = defineProps(['property'])
                         </div>
                         <div>
                             <img src="../assets/images/ic_size@3x.png" alt="">
-                            <span>{{ property.size }}</span>
+                            <span>{{ property.size }}m<sup>2</sup></span>
                         </div>
                     </div>
                     <div class="property-price">
@@ -53,12 +61,12 @@ const {property} = defineProps(['property'])
                     </div>
                  </div>
             </div>
-
 </template>
 
 
 
 <style scoped> 
+
 img{
     width: 100%;
     height: 100%;
@@ -85,6 +93,7 @@ img{
 .property-location {
     display: flex;
     gap: 10px;
+  
 }
 
 .property-location h2 {
@@ -115,7 +124,10 @@ img{
     width: 30px;
     height: 30px;
     display: block;
+    border: 1px solid black;
+
 }
+
 
 .property-utilities span {
     width: 100%;
@@ -129,6 +141,7 @@ img{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px 0;
 }
 
 .property-price img{
@@ -155,6 +168,26 @@ img{
 
 .details-btn:hover {
     background-color: rgba(235, 84, 64, 0.8);
+}
+
+.favorite{
+    color: red;
+    justify-self:self-end;
+    margin-left: auto;
+    animation: beat 0.5s ease infinite alternate;
+    /* margin-top: 15px; */
+   
+   
+   
+}
+
+@keyframes beat{
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.1);
+    }
 }
 
 

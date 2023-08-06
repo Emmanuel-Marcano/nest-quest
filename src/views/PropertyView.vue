@@ -82,6 +82,10 @@ onMounted(async function(){
 
   function handleImageUpload(){
     console.log(selectedImage)
+
+
+
+
     let data =  new FormData()
     data.append('image', selectedImage)
     propertyStore.uploadImage(route.params.id, data).then(function(response){
@@ -99,9 +103,11 @@ onMounted(async function(){
     showEditModal.value = !showEditModal.value
   })
 
+  }
 
-  
-
+  function addToFavorites(){
+    propertyStore.addFavoriteProperty(property.value)
+    console.log(propertyStore.favoriteProperties)
 
   }
 
@@ -131,12 +137,12 @@ onMounted(async function(){
             <li> <img src="../assets/images/ic_size@3x.png" alt=""> Size: {{ property.size }}</li>
             <li> <img src="../assets/images/ic_mobile_navigarion_info@3x.png" alt=""> Description: {{ property.description }}</li>
             <li> <img src="../assets/images/ic_construction_date@3x.png" alt=""> Construction Year: {{ property.constructionYear }}</li>
+            <li @click="addToFavorites"> <i class="favorite fa-solid fa-heart fa-2x"></i>Add to favorites </li>
           </ul>
           <div v-show="property.madeByMe" class="edit-delete-btns">
             
                 <label for="img">Select image:</label>
                 <input  @change="handleImageSelection" type="file" id="img" name="img" accept="image/*">
-                <!-- <input type="submit"> -->
                 <button @click="handleImageUpload" class="upload-btn">Upload image</button>
           
             <button @click="handleEdit" class="edit-btn">Edit</button>
@@ -195,6 +201,11 @@ ul{
 
 }
 
+.interior-image{
+  overflow: hidden;
+
+}
+
 
 .property{
   /* padding: 50px 0; */
@@ -203,7 +214,7 @@ ul{
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid rgb(199, 199, 199);
+  /* border-bottom: 1px solid rgb(199, 199, 199); */
 }
 
 /* .property-details {
@@ -392,6 +403,18 @@ li {
 .upload-btn {
   background-color: var(--secondary-color);
 }
+
+.favorite{
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.favorite:hover{
+  color: red;
+  transform: translateY(-5px);
+}
+
+
 
 
 @media only screen and (min-width: 700px) {

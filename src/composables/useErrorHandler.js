@@ -9,6 +9,9 @@ export default function(data){
     if(data.bedrooms === ""){
         errorsArray.push("Please enter No. of bedrooms")
     }
+    if(data.bathrooms === ""){
+        errorsArray.push("Please enter No. of bathrooms")
+    }
 
     if(data.size === ""){
         errorsArray.push("Please enter size")
@@ -39,11 +42,4 @@ export default function(data){
     }
 
     return errorsArray
-
-
-
-
-
-
-
 }

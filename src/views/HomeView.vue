@@ -2,7 +2,6 @@
 import { onMounted } from 'vue'
 import { usePropertiesStore } from '../stores/PropertyStore';
 import gsap from 'gsap'
-import usePropertyFetch from '../composables/usePropertyFetch'
 import Showcase from '../components/Showcase.vue'
 import PropertyCard from '../components/PropertyCard.vue'
 import fallbackPropertyCard from '../components/fallbackPropertyCard.vue'
@@ -15,7 +14,6 @@ const propertyStore = usePropertiesStore()
 
 onMounted(async function(){
      await propertyStore.getProperties()
-    //  console.log(propertyStore.properties)
 })
 
 

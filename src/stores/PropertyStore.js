@@ -12,7 +12,8 @@ export const usePropertiesStore = defineStore("propertyStore", {
             bedroomsInput: 1,
             bathroomsInput: 1,
             sizeInput: 50
-        }
+        },
+        favoriteProperties: []
         }
     },
 
@@ -69,6 +70,17 @@ export const usePropertiesStore = defineStore("propertyStore", {
                 foundProperty = this.properties.find(function(property){
                 return property.id === id })
                 return foundProperty
+        },
+
+        addFavoriteProperty(property){
+            console.log(property.id)
+            let found = this.favoriteProperties.some(function(prop){
+                return prop.id === property.id
+            })
+
+            if(!found){
+                this.favoriteProperties.push(property)
+            }
         }
     }
 })
